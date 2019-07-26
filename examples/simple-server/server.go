@@ -26,7 +26,7 @@ func main() {
 }
 
 func getUser(r *http.Request) (int, interface{}) {
-	return http.StatusOK, UserDto{Username: "amicard", Password: "test"}
+	return http.StatusOK, UserDto{Username: "creekorful", Password: "test"}
 }
 
 func createUser(_ *http.Request) (int, interface{}) {
