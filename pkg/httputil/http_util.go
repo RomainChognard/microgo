@@ -20,3 +20,17 @@ func WriteJsonResponse(w http.ResponseWriter, status int, body interface{}) erro
 	_, err = w.Write(bodyBytes)
 	return err
 }
+
+func JsonHandler(handler func(*http.Request) (int, interface{})) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		// execute request
+		status, body := handler(request)
+
+		// override 200 OK with no content to 204 NO CONTENT
+		if status == http.StatusOK && body == nil {
+			status = http.StatusNoContent
+		}
+
+		_ = WriteJsonResponse(writer, status, body)
+	}
+}

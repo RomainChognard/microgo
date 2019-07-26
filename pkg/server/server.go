@@ -26,17 +26,7 @@ type gorillaApiServer struct {
 func (gas *gorillaApiServer) PushHandler(method string, path string, handler Handler) {
 	log.Println("Registering new handler: " + method + " " + path)
 
-	gas.mux.HandleFunc(path, func(writer http.ResponseWriter, request *http.Request) {
-		// execute request
-		status, body := handler(request)
-
-		// override 200 OK with no content to 204 NO CONTENT
-		if status == http.StatusOK && body == nil {
-			status = http.StatusNoContent
-		}
-
-		_ = httputil.WriteJsonResponse(writer, status, body)
-	}).Methods(method)
+	gas.mux.HandleFunc(path, httputil.JsonHandler(handler)).Methods(method)
 }
 
 func (gas *gorillaApiServer) Listen(address string, port int) error {
