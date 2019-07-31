@@ -17,7 +17,7 @@ func CORSMiddleware(r *mux.Router, allowOrigin string, allowHeaders []string) mu
 					routeMethods = append(routeMethods, currentMethods...)
 				}
 
-				w.Header().Set("Access-Control-Allow-Methods", strings.Join(routeMethods, ","))
+				w.Header().Set("Access-Control-Allow-Methods", strings.Join(removeDuplicatesFromSlice(routeMethods), ","))
 				w.Header().Set("Access-Control-Allow-Headers", strings.Join(allowHeaders, ","))
 				w.Header().Set("Access-Control-Allow-Origin", allowOrigin)
 
@@ -26,4 +26,18 @@ func CORSMiddleware(r *mux.Router, allowOrigin string, allowHeaders []string) mu
 			next.ServeHTTP(w, req)
 		})
 	}
+}
+
+func removeDuplicatesFromSlice(s []string) []string {
+	m := make(map[string]bool)
+	for _, item := range s {
+		if _, ok := m[item]; !ok {
+			m[item] = true
+		}
+	}
+	var result []string
+	for item := range m {
+		result = append(result, item)
+	}
+	return result
 }
