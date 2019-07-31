@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/creekorful/microgo/pkg/httputil"
+	"github.com/RomainChognard/microgo/pkg/httputil"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -17,8 +17,11 @@ func main() {
 	r := mux.NewRouter()
 
 	// register endpoints
-	r.HandleFunc("/users", httputil.JsonHandler(getUser)).Methods(http.MethodGet)
-	r.HandleFunc("/users", httputil.JsonHandler(createUser)).Methods(http.MethodPost)
+	r.HandleFunc("/users", httputil.JsonHandler(getUser)).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/users", httputil.JsonHandler(createUser)).Methods(http.MethodPost, http.MethodOptions)
+
+	// add CORS middleware
+	r.Use(httputil.CORSMethodMiddleware(r, "*", []string{"*"}))
 
 	// finally listen
 	if err := http.ListenAndServe("0.0.0.0:7777", r); err != nil {
