@@ -21,7 +21,7 @@ func main() {
 	r.HandleFunc("/users", httputil.JsonHandler(createUser)).Methods(http.MethodPost, http.MethodOptions)
 
 	// add CORS middleware
-	r.Use(httputil.CORSMethodMiddleware(r, "*", []string{"*"}))
+	r.Use(httputil.CORSMiddleware(r, "*", []string{"*"}))
 
 	// finally listen
 	if err := http.ListenAndServe("0.0.0.0:7777", r); err != nil {
