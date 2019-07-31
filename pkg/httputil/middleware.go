@@ -10,7 +10,7 @@ func CORSMethodMiddleware(r *mux.Router, allowOrigin string, allowHeaders []stri
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 
-			_ := r.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+			_ = r.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 				routeMethods, _ := route.GetMethods()
 
 				// add OPTIONS if not already defined
