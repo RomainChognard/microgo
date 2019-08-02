@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/RomainChognard/microgo/pkg/httputil"
+	"github.com/creekorful/microgo/pkg/httputil"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
